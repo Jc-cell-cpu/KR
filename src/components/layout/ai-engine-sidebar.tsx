@@ -63,7 +63,7 @@ export function AIEngineSidebar() {
         initial={{ width: 240 }}
         animate={{ width: collapsed ? 0 : 240 }}
         transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative flex h-screen shrink-0 flex-col overflow-hidden border-r border-border/50 bg-card dark:bg-[#0f1623]"
+        className="relative flex shrink-0 flex-col overflow-hidden rounded-[20px] border border-border/50 bg-card/95 shadow-xl backdrop-blur-xl dark:bg-[#0f1623]/95"
       >
         <div className="flex min-w-[240px] flex-col h-full">
           {/* Header */}

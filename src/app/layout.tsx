@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className="min-h-full flex bg-background text-foreground transition-colors duration-200">
         <ThemeProvider>
           <Sidebar />
-          <main className="flex-1 ml-[60px] min-h-screen relative">
+          <main className="flex-1 ml-[88px] min-h-screen relative p-3">
             <StarBackground />
             <div className="relative z-10">
               {children}

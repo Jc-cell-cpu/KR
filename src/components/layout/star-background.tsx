@@ -112,12 +112,59 @@ export function StarBackground() {
         ))}
       </div>
       
-      {/* Light mode extremely subtle dark dots instead of white stars if needed, or just let them be invisible */}
+      {/* === Light Mode Background === */}
       <div className="absolute inset-0 bg-transparent transition-opacity duration-700 dark:opacity-0 opacity-100">
-        {stars.map((star) => (
+        
+        {/* Subtle dot grid pattern */}
+        <div 
+           className="absolute inset-0 opacity-40"
+           style={{
+             backgroundImage: "radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.3) 1px, transparent 0)",
+             backgroundSize: "32px 32px"
+           }}
+        />
+
+        {/* Ambient Pastel Orb 1 (Top Left) */}
+        <motion.div
+          className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full mix-blend-multiply filter blur-[100px] bg-indigo-300/30"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.5, 0.8, 0.5],
+            x: [0, 30, 0],
+            y: [0, 20, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Ambient Pastel Orb 2 (Right) */}
+        <motion.div
+          className="absolute top-[5%] right-[-5%] w-[500px] h-[500px] rounded-full mix-blend-multiply filter blur-[100px] bg-sky-300/30"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.4, 0.7, 0.4],
+            y: [0, -40, 0],
+            x: [0, -20, 0]
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Ambient Pastel Orb 3 (Bottom Left) */}
+        <motion.div
+          className="absolute bottom-[0%] left-[10%] w-[700px] h-[700px] rounded-full mix-blend-multiply filter blur-[120px] bg-fuchsia-300/20"
+          animate={{
+            scale: [1, 1.05, 1],
+            opacity: [0.3, 0.6, 0.3],
+            x: [0, -30, 0],
+            y: [0, -10, 0]
+          }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Floating Light Particles */}
+        {stars.slice(0, 30).map((star) => (
           <motion.div
             key={`light-${star.id}`}
-            className="absolute rounded-full bg-indigo-500/20"
+            className="absolute rounded-full bg-slate-400/20"
             style={{
               left: star.x,
               top: star.y,
@@ -125,10 +172,11 @@ export function StarBackground() {
               height: star.size,
             }}
             animate={{
-              opacity: [0.1, 0.4, 0.1]
+              opacity: [0.1, 0.5, 0.1],
+              y: [0, -10, 0]
             }}
             transition={{
-              duration: star.duration,
+              duration: star.duration * 2,
               repeat: Infinity,
               delay: star.delay,
               ease: "easeInOut",
