@@ -1,0 +1,89 @@
+"use client";
+
+import { Bot, Clock, Percent } from "lucide-react";
+import { SectionCard } from "./section-card";
+import { StatusBadge } from "./status-badge";
+import { mockAgents } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
+
+export function AgentsPanel() {
+  const stats = [
+    {
+      label: "Total",
+      value: mockAgents.length,
+    },
+    {
+      label: "Deployed",
+      value: mockAgents.filter((a) => a.status === "active").length,
+    },
+    {
+      label: "Draft",
+      value: mockAgents.filter((a) => a.status === "draft").length,
+    },
+  ];
+
+  return (
+    <SectionCard
+      title="AI Agents"
+      subtitle="Manage your intelligent agents"
+      stats={stats}
+      action={
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-xs text-muted-foreground hover:text-foreground"
+        >
+          View All
+        </Button>
+      }
+    >
+      <div className="space-y-1 max-h-[380px] overflow-y-auto -mr-2 pr-2">
+        {mockAgents.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <Bot className="h-10 w-10 text-muted-foreground/40 mb-3" />
+            <p className="text-sm font-medium text-muted-foreground">
+              No agents yet
+            </p>
+            <p className="text-xs text-muted-foreground/60 mt-1">
+              Create your first AI agent to get started
+            </p>
+          </div>
+        ) : (
+          mockAgents.map((agent) => (
+            <div
+              key={agent.id}
+              className="group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-accent/50"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/10 to-violet-500/10 dark:from-indigo-500/20 dark:to-violet-500/20">
+                <Bot className="h-4 w-4 text-indigo-500" />
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium truncate">{agent.name}</p>
+                  <span className="shrink-0 rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    {agent.model}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 mt-0.5">
+                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Clock className="h-3 w-3" />
+                    {agent.lastRun}
+                  </span>
+                  {agent.successRate > 0 && (
+                    <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <Percent className="h-3 w-3" />
+                      {agent.successRate}%
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <StatusBadge status={agent.status} />
+            </div>
+          ))
+        )}
+      </div>
+    </SectionCard>
+  );
+}
