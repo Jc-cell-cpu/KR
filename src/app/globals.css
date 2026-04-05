@@ -213,3 +213,81 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* ── Metric card hover effect handled via JS spotlight in metric-card.tsx ── */
+
+/* ── Refresh progress ring ────────────────────────────────────────── */
+@keyframes progress-ring {
+  from { stroke-dashoffset: 94.25; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.progress-ring-animate {
+  animation: progress-ring 1s linear forwards;
+}
+
+/* ── Skeleton shimmer ─────────────────────────────────────────────── */
+@keyframes skeleton-sweep {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    color-mix(in srgb, var(--muted) 60%, white) 50%,
+    var(--muted) 75%
+  );
+  background-size: 800px 100%;
+  animation: skeleton-sweep 1.6s ease-in-out infinite;
+}
+
+/* ── Theme transition — circular wipe from toggle button ────────────── */
+
+/* All elements fade smoothly between theme values */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.2s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Opt-out elements that should NOT transition (animations, SVG fills, etc.) */
+[data-no-theme-transition],
+[data-no-theme-transition] *,
+.animate-ping,
+.progress-ring-animate {
+  transition: none !important;
+}
+
+/* View Transitions API — circular clip wipe */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* The incoming theme expands as a circle from the toggle button */
+::view-transition-new(root) {
+  clip-path: circle(0% at var(--vt-x, 50%) var(--vt-y, 50%));
+  animation: vt-circle-expand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* The outgoing snapshot stays underneath, frozen */
+::view-transition-old(root) {
+  clip-path: none;
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+@keyframes vt-circle-expand {
+  from { clip-path: circle(0% at var(--vt-x, 50%) var(--vt-y, 50%)); }
+  to   { clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 50%)); }
+}

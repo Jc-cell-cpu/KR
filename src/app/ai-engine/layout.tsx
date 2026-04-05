@@ -8,7 +8,7 @@ export default function AIEngineLayout({
   return (
     <div className="flex h-[calc(100vh-24px)] gap-3 bg-red-400/0">
       <AIEngineSidebar />
-      <div className="flex-1 overflow-y-auto rounded-[20px] bg-background">
+      <div className="flex-1 overflow-y-auto rounded-[20px] bg-transparent">
         {children}
       </div>
     </div>

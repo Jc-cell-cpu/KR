@@ -55,7 +55,7 @@ export function Sidebar() {
             <Link
               key={item.label}
               href={item.href}
-              className="group relative flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-200"
+              className="group relative flex h-10 w-10 items-center justify-center rounded-xl"
             >
               {/* Active indicator */}
               {isActive && (
@@ -66,18 +66,21 @@ export function Sidebar() {
                 />
               )}
 
-              <div
-                className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 ${
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-200 ${
                   isActive
-                    ? "bg-white/[0.08] text-cyan-400"
-                    : "text-slate-500 hover:bg-white/[0.05] hover:text-slate-300"
+                    ? "bg-white/[0.10] text-cyan-400 shadow-inner"
+                    : "text-slate-500 hover:bg-white/[0.14] hover:text-white"
                 }`}
               >
                 <Icon className="h-[18px] w-[18px]" />
-              </div>
+              </motion.div>
 
               {/* Tooltip */}
-              <div className="pointer-events-none absolute left-full ml-3 rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-200 opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100">
+              <div className="pointer-events-none absolute left-full ml-3 rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-200 opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100 whitespace-nowrap">
                 {item.label}
                 <div className="absolute left-0 top-1/2 -ml-1 h-2 w-2 -translate-y-1/2 rotate-45 bg-slate-800" />
               </div>
@@ -94,9 +97,16 @@ export function Sidebar() {
             <Link
               key={item.label}
               href={item.href}
-              className="group relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition-colors duration-200 hover:bg-white/[0.05] hover:text-slate-300"
+              className="group relative flex h-10 w-10 items-center justify-center rounded-xl"
             >
-              <Icon className="h-[18px] w-[18px]" />
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition-colors duration-200 hover:bg-white/[0.14] hover:text-white"
+              >
+                <Icon className="h-[18px] w-[18px]" />
+              </motion.div>
               <div className="pointer-events-none absolute left-full ml-3 rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-200 opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100">
                 {item.label}
                 <div className="absolute left-0 top-1/2 -ml-1 h-2 w-2 -translate-y-1/2 rotate-45 bg-slate-800" />

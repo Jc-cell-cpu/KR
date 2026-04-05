@@ -1,13 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, type Variants } from "framer-motion";
 import {
-  Bot,
-  GitBranch,
-  Activity,
-  PlusCircle,
-  Rocket,
-  Settings,
+  Bot, GitBranch, Activity, PlusCircle, Rocket, Settings,
 } from "lucide-react";
 
 import { Header } from "@/components/layout/header";
@@ -16,7 +12,17 @@ import { ActionCard } from "@/components/dashboard/action-card";
 import { AgentsPanel } from "@/components/dashboard/agents-panel";
 import { WorkflowsPanel } from "@/components/dashboard/workflows-panel";
 import { ExecutionChart } from "@/components/dashboard/execution-chart";
+import { SectionDivider } from "@/components/ui/section-divider";
+import { FAB } from "@/components/ui/fab";
+import { CommandPalette } from "@/components/ui/command-palette";
+import {
+  MetricCardSkeleton,
+  ActionCardSkeleton,
+  SectionPanelSkeleton,
+  ChartSkeleton,
+} from "@/components/dashboard/skeleton-cards";
 
+// ─── Animation variants ────────────────────────────────────────────────────
 const container: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -34,6 +40,7 @@ const item: Variants = {
   },
 };
 
+// ─── Data ──────────────────────────────────────────────────────────────────
 const metrics = [
   {
     title: "Active Agents",
@@ -41,7 +48,8 @@ const metrics = [
     change: 8.2,
     changeLabel: "vs last week",
     icon: <Bot className="h-5 w-5" />,
-    gradient: "from-indigo-500 to-violet-500",
+    cardBg: "bg-orange-50 dark:bg-orange-500/10",
+    iconColor: "text-orange-500",
   },
   {
     title: "Active Workflows",
@@ -49,7 +57,8 @@ const metrics = [
     change: 0,
     changeLabel: "vs last week",
     icon: <GitBranch className="h-5 w-5" />,
-    gradient: "from-cyan-500 to-blue-500",
+    cardBg: "bg-sky-50 dark:bg-sky-500/10",
+    iconColor: "text-sky-500",
   },
   {
     title: "Execution Success Rate",
@@ -57,7 +66,8 @@ const metrics = [
     change: 0,
     changeLabel: "vs last week",
     icon: <Activity className="h-5 w-5" />,
-    gradient: "from-emerald-500 to-teal-500",
+    cardBg: "bg-teal-50 dark:bg-teal-500/10",
+    iconColor: "text-teal-500",
   },
 ];
 
@@ -66,69 +76,129 @@ const actions = [
     title: "Create New Agent",
     description: "Configure and deploy a new AI agent",
     icon: <PlusCircle className="h-5 w-5" />,
-    gradient: "from-indigo-500 to-violet-500",
+    gradient: "from-orange-400 to-orange-500",
   },
   {
     title: "Deployed Agents",
     description: "View and manage your active agents",
     icon: <Rocket className="h-5 w-5" />,
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-violet-500 to-purple-600",
   },
   {
     title: "Settings",
     description: "GitHub, GCP, API keys & AI models",
     icon: <Settings className="h-5 w-5" />,
-    gradient: "from-slate-500 to-zinc-600",
+    gradient: "from-slate-600 to-slate-700",
   },
 ];
 
+// ─── Page ──────────────────────────────────────────────────────────────────
 export default function AIEnginePage() {
+  const [loading, setLoading] = useState(true);
+  const [cmdOpen, setCmdOpen] = useState(false);
+
+  // Simulate initial data load — dismiss skeleton after 1.5 s
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Global ⌘K / Ctrl+K listener
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setCmdOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
-    <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="space-y-8"
-      >
-        {/* Header */}
-        <motion.div variants={item}>
-          <Header />
-        </motion.div>
+    <>
+      <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
+      <FAB />
 
-        {/* KPI Metric Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {metrics.map((metric) => (
-            <motion.div key={metric.title} variants={item}>
-              <MetricCard {...metric} />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Quick Action Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {actions.map((action) => (
-            <motion.div key={action.title} variants={item}>
-              <ActionCard {...action} />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Agents & Workflows Panels */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="space-y-6"
+        >
+          {/* Header */}
           <motion.div variants={item}>
-            <AgentsPanel />
+            <Header />
           </motion.div>
-          <motion.div variants={item}>
-            <WorkflowsPanel />
-          </motion.div>
-        </div>
 
-        {/* Execution Analytics Chart */}
-        <motion.div variants={item}>
-          <ExecutionChart />
+          {/* ── KPI Cards ─────────────────────────────────────────────── */}
+          <motion.div variants={item}>
+            <SectionDivider label="Overview" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {loading
+              ? [1, 2, 3].map((i) => (
+                  <motion.div key={i} variants={item}>
+                    <MetricCardSkeleton />
+                  </motion.div>
+                ))
+              : metrics.map((metric) => (
+                  <motion.div key={metric.title} variants={item}>
+                    <MetricCard {...metric} />
+                  </motion.div>
+                ))}
+          </div>
+
+          {/* ── Quick Actions ─────────────────────────────────────────── */}
+          <motion.div variants={item}>
+            <SectionDivider label="Quick Actions" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {loading
+              ? [1, 2, 3].map((i) => (
+                  <motion.div key={i} variants={item}>
+                    <ActionCardSkeleton />
+                  </motion.div>
+                ))
+              : actions.map((action) => (
+                  <motion.div key={action.title} variants={item}>
+                    <ActionCard {...action} />
+                  </motion.div>
+                ))}
+          </div>
+
+          {/* ── Agents & Workflows ────────────────────────────────────── */}
+          <motion.div variants={item}>
+            <SectionDivider label="Resources" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {loading ? (
+              <>
+                <motion.div variants={item}><SectionPanelSkeleton rows={4} /></motion.div>
+                <motion.div variants={item}><SectionPanelSkeleton rows={4} /></motion.div>
+              </>
+            ) : (
+              <>
+                <motion.div variants={item}><AgentsPanel /></motion.div>
+                <motion.div variants={item}><WorkflowsPanel /></motion.div>
+              </>
+            )}
+          </div>
+
+          {/* ── Analytics ─────────────────────────────────────────────── */}
+          <motion.div variants={item}>
+            <SectionDivider label="Analytics" />
+          </motion.div>
+
+          <motion.div variants={item}>
+            {loading ? <ChartSkeleton /> : <ExecutionChart />}
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </>
   );
 }
