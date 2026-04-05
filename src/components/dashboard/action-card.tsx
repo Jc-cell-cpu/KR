@@ -30,9 +30,9 @@ export function ActionCard({
         {icon}
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold">{title}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground truncate">
+        <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground sm:truncate">
           {description}
         </p>
       </div>

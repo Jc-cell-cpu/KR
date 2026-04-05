@@ -56,7 +56,7 @@ export function StatCard({
           </span>
         </div>
 
-        <p className="text-3xl font-bold tracking-tight">{value}</p>
+        <p className="text-2xl font-bold tracking-tight sm:text-3xl">{value}</p>
         <p className="mt-0.5 text-sm text-muted-foreground">{title}</p>
       </div>
     </motion.div>

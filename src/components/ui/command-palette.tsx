@@ -83,10 +83,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   }, [open]);
 
   useEffect(() => {
-    setActiveIndex(0);
-  }, [query]);
-
-  useEffect(() => {
     const el = listRef.current?.querySelectorAll("[data-cmd-item]")[activeIndex];
     el?.scrollIntoView({ block: "nearest" });
   }, [activeIndex]);
@@ -137,7 +133,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -8 }}
             transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="fixed left-1/2 top-[15vh] z-50 w-full max-w-xl -translate-x-1/2 rounded-2xl border border-border/60 bg-card shadow-2xl dark:border-white/[0.08]"
+            className="fixed inset-x-4 top-20 z-50 w-auto rounded-2xl border border-border/60 bg-card shadow-2xl dark:border-white/[0.08] sm:left-1/2 sm:right-auto sm:top-[15vh] sm:w-full sm:max-w-xl sm:-translate-x-1/2"
           >
             {/* Search input */}
             <div className="flex items-center gap-3 border-b border-border/40 px-4 py-3.5">
@@ -145,7 +141,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               <input
                 ref={inputRef}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setActiveIndex(0);
+                }}
                 placeholder="Search agents, workflows, actions…"
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/50"
               />
@@ -158,7 +157,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             </div>
 
             {/* Results */}
-            <div ref={listRef} className="max-h-[380px] overflow-y-auto py-2">
+            <div ref={listRef} className="max-h-[min(60vh,380px)] overflow-y-auto py-2">
               {flatList.length === 0 ? (
                 <div className="py-12 text-center text-sm text-muted-foreground">
                   No results for &ldquo;{query}&rdquo;
@@ -217,7 +216,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center gap-4 border-t border-border/40 px-4 py-2.5 text-[10px] text-muted-foreground/60">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border/40 px-4 py-2.5 text-[10px] text-muted-foreground/60">
               <span><kbd className="font-mono">↑↓</kbd> navigate</span>
               <span><kbd className="font-mono">↵</kbd> select</span>
               <span><kbd className="font-mono">Esc</kbd> close</span>

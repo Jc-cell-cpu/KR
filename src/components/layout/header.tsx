@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { RotateCw, Sun, Moon, Bell, ChevronRight } from "lucide-react";
@@ -22,9 +22,11 @@ export function Header({
 }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const handleRefresh = () => {
     if (isRefreshing) return;
@@ -33,12 +35,12 @@ export function Header({
   };
 
   return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <header className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
       {showTitle && (
-        <div>
+        <div className="min-w-0">
           {/* Breadcrumb */}
           {breadcrumb.length > 0 && (
-            <div className="mb-1.5 flex items-center gap-1 text-xs text-muted-foreground/60">
+            <div className="mb-1.5 flex flex-wrap items-center gap-1 text-xs text-muted-foreground/60">
               {breadcrumb.map((crumb, i) => (
                 <span key={crumb} className="flex items-center gap-1">
                   {i > 0 && <ChevronRight className="h-3 w-3" />}
@@ -56,12 +58,16 @@ export function Header({
             </div>
           )}
 
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
+          <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+            {title}
+          </h1>
+          <p className="mt-0.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {subtitle}
+          </p>
         </div>
       )}
 
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex w-full flex-wrap items-center gap-2 sm:gap-2.5 sm:justify-end lg:w-auto lg:shrink-0">
         {/* Live badge */}
         <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-50 px-2.5 py-1 dark:bg-emerald-500/10">
           <span className="relative flex h-2 w-2">
@@ -90,7 +96,7 @@ export function Header({
           variant="outline"
           size="icon"
           onClick={handleRefresh}
-          className="relative h-9 w-9 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm hover:bg-accent overflow-hidden"
+          className="relative h-9 w-9 overflow-hidden rounded-xl border-border/50 bg-card/50 backdrop-blur-sm hover:bg-accent"
         >
           {/* SVG progress ring */}
           {isRefreshing && (
@@ -148,8 +154,8 @@ export function Header({
         </Button>
 
         {/* User avatar */}
-        <div className="flex items-center gap-2.5 ml-1">
-          <div className="hidden sm:block text-right">
+        <div className="ml-auto flex items-center gap-2.5 sm:ml-1">
+          <div className="hidden text-right sm:block">
             <p className="text-xs font-medium">Admin User</p>
             <p className="text-[10px] text-muted-foreground">admin@krecontracts.com</p>
           </div>

@@ -25,7 +25,7 @@ export function FAB() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-8 right-8 z-40 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6 xl:bottom-8 xl:right-8">
       {/* Action items */}
       <AnimatePresence>
         {open &&
@@ -62,7 +62,7 @@ export function FAB() {
       <motion.button
         onClick={() => setOpen((v) => !v)}
         whileTap={{ scale: 0.92 }}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl transition-all duration-200 hover:bg-indigo-700 hover:shadow-indigo-500/30"
+        className="relative flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl transition-all duration-200 hover:bg-indigo-700 hover:shadow-indigo-500/30 sm:h-14 sm:w-14"
         aria-label={open ? "Close menu" : "Quick create"}
       >
         {/* Glow ring */}

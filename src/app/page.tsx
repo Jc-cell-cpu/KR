@@ -52,18 +52,18 @@ const productIcons: Record<string, React.ReactNode> = {
 
 export default function DashboardPage() {
   return (
-    <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="space-y-8"
+        className="w-full space-y-6 sm:space-y-8"
       >
         {/* Header */}
         <motion.div variants={item}>
           <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight">
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                 Dashboard
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -75,7 +75,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {mockDashboardStats.map((stat, idx) => (
             <motion.div key={stat.title} variants={item}>
               <StatCard
@@ -92,10 +92,12 @@ export default function DashboardPage() {
 
         {/* Products Section */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold tracking-tight mb-4">Your Products</h2>
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">
+            Your Products
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5">
           {mockProducts.map((product) => (
             <motion.div key={product.id} variants={item}>
               <ProductCard

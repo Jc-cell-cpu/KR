@@ -36,8 +36,8 @@ export function ExecutionChart() {
   return (
     <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm dark:border-white/[0.06]">
       {/* Header row with collapse toggle */}
-      <div className="flex items-center justify-between px-6 pt-5 pb-0">
-        <div>
+      <div className="flex flex-col gap-3 px-4 pb-0 pt-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pt-5">
+        <div className="min-w-0">
           <h2 className="text-base font-semibold tracking-tight">Execution Analytics</h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Success vs failed executions — last 7 days
@@ -45,7 +45,7 @@ export function ExecutionChart() {
         </div>
         <div className="flex items-center gap-3">
           {/* Legend */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden items-center gap-3 md:flex">
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="h-2 w-2 rounded-full bg-emerald-500" />Success
             </span>
@@ -78,8 +78,8 @@ export function ExecutionChart() {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <div className="p-6 pt-4">
-              <div className="h-[240px] w-full">
+            <div className="p-4 pt-4 sm:p-6 sm:pt-4">
+              <div className="h-[220px] w-full sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={mockExecutionData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                     <defs>

@@ -60,7 +60,7 @@ export function AgentsPanel() {
                 {/* Row */}
                 <div
                   onClick={() => setExpandedId(isExpanded ? null : agent.id)}
-                  className="group/row relative flex items-center gap-3 rounded-lg px-2 py-2.5 cursor-pointer transition-colors hover:bg-accent/50"
+                  className="group/row relative flex cursor-pointer flex-wrap items-center gap-2.5 rounded-lg px-2 py-2.5 transition-colors hover:bg-accent/50 sm:flex-nowrap sm:gap-3"
                 >
                   {/* Colored left-border indicator on hover */}
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-indigo-400 opacity-0 transition-opacity duration-200 group-hover/row:opacity-100" />
@@ -73,9 +73,15 @@ export function AgentsPanel() {
                     )}
                   </div>
 
-                  <p className="flex-1 truncate text-sm font-medium">{agent.name}</p>
+                  <div className="min-w-0 flex-1 basis-[calc(100%-3rem)] sm:basis-auto">
+                    <p className="truncate text-sm font-medium">{agent.name}</p>
+                    <span className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground sm:hidden">
+                      <Clock className="h-3 w-3" />
+                      {agent.lastRun}
+                    </span>
+                  </div>
 
-                  <span className="shrink-0 flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <span className="hidden shrink-0 items-center gap-1 text-[11px] text-muted-foreground sm:flex">
                     <Clock className="h-3 w-3" />
                     {agent.lastRun}
                   </span>

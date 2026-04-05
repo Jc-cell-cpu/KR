@@ -120,12 +120,12 @@ export default function AIEnginePage() {
       <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
       <FAB />
 
-      <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="space-y-6"
+          className="w-full space-y-5 sm:space-y-6"
         >
           {/* Header */}
           <motion.div variants={item}>
@@ -137,7 +137,7 @@ export default function AIEnginePage() {
             <SectionDivider label="Overview" />
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {loading
               ? [1, 2, 3].map((i) => (
                   <motion.div key={i} variants={item}>
@@ -156,7 +156,7 @@ export default function AIEnginePage() {
             <SectionDivider label="Quick Actions" />
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {loading
               ? [1, 2, 3].map((i) => (
                   <motion.div key={i} variants={item}>

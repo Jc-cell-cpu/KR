@@ -26,8 +26,8 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm dark:border-white/[0.06] dark:bg-card">
-      <div className="flex items-center justify-between px-6 pt-5 pb-0">
-        <div>
+      <div className="flex flex-col gap-3 px-4 pb-0 pt-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pt-5">
+        <div className="min-w-0">
           <h2 className="text-base font-semibold tracking-tight">{title}</h2>
           {subtitle && (
             <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
@@ -37,7 +37,7 @@ export function SectionCard({
       </div>
 
       {stats && stats.length > 0 && (
-        <div className="flex gap-5 px-6 pt-3">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 px-4 pt-3 sm:px-6">
           {stats.map((stat) => (
             <div key={stat.label} className="flex items-baseline gap-1.5 text-sm">
               <span className={`text-xl font-bold ${stat.color ?? ""}`}>
@@ -49,11 +49,11 @@ export function SectionCard({
         </div>
       )}
 
-      <div className="px-6 pt-4">
+      <div className="px-4 pt-4 sm:px-6">
         <Separator className="bg-border/40" />
       </div>
 
-      <div className="p-5 pt-3">{children}</div>
+      <div className="p-4 pt-3 sm:p-5 sm:pt-3">{children}</div>
     </div>
   );
 }

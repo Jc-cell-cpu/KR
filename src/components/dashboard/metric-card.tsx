@@ -100,7 +100,9 @@ export function MetricCard({
       <div className="relative z-10">
         {/* Top row: label left — trend badge + icon right */}
         <div className="flex items-start justify-between gap-3">
-          <p className="text-sm font-medium text-muted-foreground leading-snug">{title}</p>
+          <p className="text-xs font-medium leading-snug text-muted-foreground sm:text-sm">
+            {title}
+          </p>
 
           <div className="flex items-center gap-2 shrink-0">
             {showTrend && (
@@ -124,7 +126,7 @@ export function MetricCard({
         </div>
 
         {/* Big value */}
-        <p className="mt-3 text-3xl font-bold tracking-tight">{value}</p>
+        <p className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">{value}</p>
 
         {/* Sub-label */}
         <p className="mt-1 text-[11px] text-muted-foreground/70">{changeLabel}</p>

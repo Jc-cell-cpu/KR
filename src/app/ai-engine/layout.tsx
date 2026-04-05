@@ -6,9 +6,9 @@ export default function AIEngineLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-[calc(100vh-24px)] gap-3 bg-red-400/0">
+    <div className="flex min-h-[calc(100dvh-24px)] flex-col gap-3 xl:h-[calc(100dvh-24px)] xl:flex-row">
       <AIEngineSidebar />
-      <div className="flex-1 overflow-y-auto rounded-[20px] bg-transparent">
+      <div className="min-w-0 flex-1 rounded-[20px] bg-transparent xl:overflow-y-auto">
         {children}
       </div>
     </div>

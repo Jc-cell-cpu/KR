@@ -31,12 +31,12 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex bg-background text-foreground transition-colors duration-200">
+      <body className="min-h-full overflow-x-hidden bg-background text-foreground transition-colors duration-200">
         <ThemeProvider>
           <Sidebar />
-          <main className="flex-1 ml-[88px] min-h-screen relative p-3">
+          <main className="relative min-h-screen p-3 pt-[84px] lg:ml-[88px] lg:pt-3">
             <StarBackground />
-            <div className="relative z-10">
+            <div className="relative z-10 min-w-0">
               {children}
             </div>
           </main>
