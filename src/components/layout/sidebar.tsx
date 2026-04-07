@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,6 +16,7 @@ import {
   Bot,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 
 const sidebarItems = [
@@ -33,7 +34,14 @@ const bottomItems = [{ icon: Settings, href: "#", label: "Settings" }];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogout = () => {
+    setShowLogoutConfirm(false);
+    router.push("/");
+  };
 
   const isActiveRoute = (href: string) =>
     href === "/dashboard"
@@ -119,9 +127,23 @@ export function Sidebar() {
             );
           })}
 
-          <div className="mt-2 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-slate-600 to-slate-700 text-[10px] font-bold text-white">
-            SU
-          </div>
+          <button
+            onClick={() => setShowLogoutConfirm(true)}
+            className="group relative mb-2 flex h-10 w-10 items-center justify-center rounded-xl transition-colors"
+          >
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              className="flex h-10 w-10 items-center justify-center rounded-xl text-red-400/70 transition-colors duration-200 hover:bg-red-500/10 hover:text-red-400"
+            >
+              <LogOut className="h-[18px] w-[18px]" />
+            </motion.div>
+            <div className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-200 opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100">
+              Logout
+              <div className="absolute left-0 top-1/2 -ml-1 h-2 w-2 -translate-y-1/2 rotate-45 bg-slate-800" />
+            </div>
+          </button>
         </div>
       </aside>
 
@@ -249,19 +271,69 @@ export function Sidebar() {
                 })}
               </div>
 
-              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.04] px-3 py-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 text-xs font-bold text-white">
-                  SU
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-white">Admin User</p>
-                  <p className="truncate text-xs text-slate-400">
-                    admin@krecontracts.com
-                  </p>
-                </div>
+              <div className="mt-auto pt-4 border-t border-white/[0.08]">
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setShowLogoutConfirm(true);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-red-400/80 transition-colors hover:bg-red-500/5 hover:text-red-400"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10">
+                    <LogOut className="h-[18px] w-[18px]" />
+                  </span>
+                  <span>Log out</span>
+                </button>
               </div>
             </motion.aside>
           </>
+        )}
+      </AnimatePresence>
+
+      {/* Logout Confirmation Modal */}
+      <AnimatePresence>
+        {showLogoutConfirm && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowLogoutConfirm(false)}
+              className="absolute inset-0 bg-slate-950/60 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative w-full max-w-[380px] overflow-hidden rounded-[24px] border border-border bg-card/90 p-6 shadow-2xl backdrop-blur-2xl"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
+                  <LogOut className="h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground">Sign Out</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Are you sure you want to sign out? You will need to verify your credentials to access the workspace again.
+                </p>
+
+                <div className="mt-8 flex w-full flex-col gap-2">
+                  <button
+                    onClick={handleLogout}
+                    className="flex h-11 w-full items-center justify-center rounded-xl bg-red-500 font-semibold text-white transition-all hover:bg-red-600 active:scale-[0.98]"
+                  >
+                    Yes, Sign Out
+                  </button>
+                  <button
+                    onClick={() => setShowLogoutConfirm(false)}
+                    className="flex h-11 w-full items-center justify-center rounded-xl border border-border bg-accent/50 font-semibold text-foreground transition-all hover:bg-accent active:scale-[0.98]"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>

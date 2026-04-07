@@ -1,8 +1,13 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { motion } from "framer-motion";
+import { type MotionValue, motion } from "framer-motion";
 import { useTheme } from "next-themes";
+
+interface StarBackgroundProps {
+  parallaxX?: MotionValue<number>;
+  parallaxY?: MotionValue<number>;
+}
 
 interface Star {
   id: number;
@@ -24,6 +29,56 @@ interface Meteor {
   repeatDelay: number;
 }
 
+// Generate a unique blink pattern per star so they never sync up
+function generateBlinkPattern(): { opacity: number[]; duration: number } {
+  const roll = Math.random();
+
+  if (roll < 0.2) {
+    // ~20% — Steady dim stars: barely flicker, very slow
+    const base = Math.random() * 0.15 + 0.2;
+    return {
+      opacity: [base, base + 0.08, base, base + 0.05, base],
+      duration: Math.random() * 6 + 8, // 8-14s
+    };
+  } else if (roll < 0.45) {
+    // ~25% — Gentle pulsers: slow, soft breathing
+    const low = Math.random() * 0.15 + 0.1;
+    const high = Math.random() * 0.3 + 0.5;
+    return {
+      opacity: [low, high, low * 1.3, high * 0.7, low],
+      duration: Math.random() * 4 + 4, // 4-8s
+    };
+  } else if (roll < 0.7) {
+    // ~25% — Quick shimmerers: rapid twinkling
+    const base = Math.random() * 0.2 + 0.15;
+    const peak = Math.random() * 0.4 + 0.6;
+    return {
+      opacity: [base, peak, base * 1.5, peak * 0.8, base, peak * 0.6, base],
+      duration: Math.random() * 2 + 1.5, // 1.5-3.5s
+    };
+  } else if (roll < 0.88) {
+    // ~18% — Irregular blinkers: unpredictable rhythm
+    const points = Math.floor(Math.random() * 4) + 5; // 5-8 keyframes
+    const opacity = Array.from({ length: points }, () =>
+      Math.random() * 0.7 + 0.1,
+    );
+    // Ensure it loops smoothly: end ≈ start
+    opacity[opacity.length - 1] = opacity[0];
+    return {
+      opacity,
+      duration: Math.random() * 5 + 3, // 3-8s
+    };
+  } else {
+    // ~12% — Bright flashers: mostly dim with sudden bright flash
+    const dim = Math.random() * 0.1 + 0.08;
+    const flash = Math.random() * 0.2 + 0.8;
+    return {
+      opacity: [dim, dim, flash, dim, dim, dim],
+      duration: Math.random() * 4 + 5, // 5-9s
+    };
+  }
+}
+
 const stars: Star[] = Array.from({ length: 145 }).map((_, i) => {
   let x = Math.random() * 100;
   let y = Math.random() * 100;
@@ -40,18 +95,16 @@ const stars: Star[] = Array.from({ length: 145 }).map((_, i) => {
     y = Math.random() * 35 + 65; // 65% to 100%
   }
 
+  const blink = generateBlinkPattern();
+
   return {
     id: i,
     x: `${x}%`,
     y: `${y}%`,
     size: Math.random() * 2.5 + 0.8,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 3,
-    opacity: [
-      Math.random() * 0.25 + 0.15,
-      Math.random() * 0.5 + 0.5,
-      Math.random() * 0.25 + 0.15,
-    ],
+    duration: blink.duration,
+    delay: Math.random() * 8, // wider spread so stars start at very different times
+    opacity: blink.opacity,
   };
 });
 
@@ -65,7 +118,7 @@ const meteors: Meteor[] = Array.from({ length: 6 }).map((_, i) => ({
   repeatDelay: Math.random() * 12 + 8,
 }));
 
-export function StarBackground() {
+export function StarBackground({ parallaxX, parallaxY }: StarBackgroundProps = {}) {
   const { resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -81,7 +134,14 @@ export function StarBackground() {
       aria-hidden="true"
     >
       {resolvedTheme === "dark" ? (
-        <div className="absolute inset-0">
+        <motion.div
+          className="absolute inset-0"
+          style={
+            parallaxX && parallaxY
+              ? { x: parallaxX, y: parallaxY }
+              : undefined
+          }
+        >
           <div className="absolute inset-x-0 top-0 h-[400px] bg-gradient-to-b from-indigo-900/20 to-transparent" />
 
           {stars.map((star) => (
@@ -134,7 +194,7 @@ export function StarBackground() {
               }}
             />
           ))}
-        </div>
+        </motion.div>
       ) : (
         <div className="absolute inset-0">
           <div

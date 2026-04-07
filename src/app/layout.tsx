@@ -29,7 +29,10 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full overflow-x-hidden bg-background text-foreground transition-all duration-300 ease-in-out">
+      <body
+        className="min-h-full overflow-x-hidden bg-background text-foreground transition-all duration-300 ease-in-out"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           {children}
         </ThemeProvider>
