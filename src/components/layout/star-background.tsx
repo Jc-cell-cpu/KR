@@ -24,12 +24,26 @@ interface Meteor {
   repeatDelay: number;
 }
 
-const stars: Star[] = Array.from({ length: 120 }).map((_, i) => {
-  const inTopHalf = i < 70;
+const stars: Star[] = Array.from({ length: 145 }).map((_, i) => {
+  let x = Math.random() * 100;
+  let y = Math.random() * 100;
+
+  if (i < 85) {
+    // Concentrated in the top 60% of the screen
+    y = Math.random() * 60;
+  } else if (i < 130) {
+    // Normal random distribution across whole screen
+    y = Math.random() * 100;
+  } else {
+    // Targeting the bottom-right quadrant as requested
+    x = Math.random() * 35 + 65; // 65% to 100%
+    y = Math.random() * 35 + 65; // 65% to 100%
+  }
+
   return {
     id: i,
-    x: `${Math.random() * 100}%`,
-    y: inTopHalf ? `${Math.random() * 55}%` : `${Math.random() * 100}%`,
+    x: `${x}%`,
+    y: `${y}%`,
     size: Math.random() * 2.5 + 0.8,
     duration: Math.random() * 3 + 2,
     delay: Math.random() * 3,

@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, href: "/", label: "Dashboard" },
+  { icon: LayoutDashboard, href: "/dashboard", label: "Dashboard" },
   { icon: Bot, href: "/ai-engine", label: "AI Engine" },
   { icon: FileText, href: "#", label: "Documents" },
   { icon: ClipboardList, href: "#", label: "Contracts" },
@@ -36,8 +36,8 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActiveRoute = (href: string) =>
-    href === "/"
-      ? pathname === "/"
+    href === "/dashboard"
+      ? pathname === "/dashboard"
       : href !== "#" && pathname.startsWith(href);
 
   const activeItem = [...sidebarItems, ...bottomItems].find((item) =>
@@ -47,7 +47,7 @@ export function Sidebar() {
   return (
     <>
       <aside className="fixed bottom-3 left-3 top-3 z-50 hidden w-[64px] flex-col items-center rounded-[20px] border border-white/[0.08] bg-[#0B0F19]/95 py-4 shadow-[10px_0_30px_-15px_rgba(0,0,0,0.6)] backdrop-blur-xl lg:flex">
-        <Link href="/" className="mb-6 flex h-9 w-9 items-center justify-center">
+        <Link href="/dashboard" className="mb-6 flex h-9 w-9 items-center justify-center">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25">
             <span className="text-sm font-bold text-white">K</span>
           </div>
@@ -128,7 +128,7 @@ export function Sidebar() {
       <div className="fixed inset-x-0 top-0 z-50 px-3 pt-3 lg:hidden">
         <div className="flex items-center justify-between rounded-[20px] border border-border/70 bg-card/90 px-4 py-3 shadow-lg backdrop-blur-xl dark:border-white/[0.08] dark:bg-[#0B0F19]/90">
           <Link
-            href="/"
+            href="/dashboard"
             className="flex min-w-0 items-center gap-3"
             onClick={() => setMobileOpen(false)}
           >
